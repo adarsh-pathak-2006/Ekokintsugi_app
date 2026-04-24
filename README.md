@@ -297,6 +297,4 @@ Do not commit:
 
 If credentials were ever exposed publicly, rotate them immediately.
 
-## License
 
-Private project. Add your preferred license before publishing publicly.
