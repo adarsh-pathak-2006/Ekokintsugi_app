@@ -1,0 +1,71 @@
+{
+  "entities": {
+    "users": {
+      "title": "User Profile",
+      "description": "Stores user profile information and circular economy stats.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "ecoPoints": { "type": "number", "description": "Current balance of eco points" },
+        "treesPlanted": { "type": "number" },
+        "co2Saved": { "type": "number" },
+        "recycledPairs": { "type": "number" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "ecoPoints", "role"]
+    },
+    "orders": {
+      "title": "Order",
+      "description": "Stores user purchase history.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "productId": { "type": "string" },
+        "productName": { "type": "string" },
+        "price": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "shipped", "delivered"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "productId", "status"]
+    },
+    "trees": {
+      "title": "Tree",
+      "description": "A planted tree record",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "species": { "type": "string" },
+        "location": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "lat": { "type": "number" },
+            "lng": { "type": "number" }
+          }
+        },
+        "plantedDate": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["growing", "mature"] },
+        "photoUrl": { "type": "string" }
+      },
+      "required": ["uid", "species", "plantedDate"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "users",
+      "description": "User profile data"
+    },
+    "/orders/{orderId}": {
+      "schema": "orders",
+      "description": "User order data"
+    },
+    "/trees/{treeId}": {
+      "schema": "trees",
+      "description": "Trees planted by users"
+    }
+  }
+}

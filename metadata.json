@@ -1,0 +1,5 @@
+{
+  "name": "EkoKintsugi",
+  "description": "Circular luxury footwear ecosystem with ESG impact tracking and AI-powered material intelligence.",
+  "requestFramePermissions": ["geolocation"]
+}

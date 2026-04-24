@@ -1,0 +1,106 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: {userId} (matches request.auth.uid)
+    // Fields:
+    //   - uid: string (required) - Firebase Auth UID
+    //   - email: string (required) - User email
+    //   - displayName: string (optional)
+    //   - photoURL: string (optional)
+    //   - ecoPoints: number (required) - Current balance
+    //   - treesPlanted: number (optional)
+    //   - co2Saved: number (optional)
+    //   - recycledPairs: number (optional)
+    //   - role: string (required) - ['user', 'admin']
+    //   - createdAt: timestamp (optional)
+    //
+    // Collection: orders
+    // Document ID: {orderId}
+    // Fields:
+    //   - uid: string (required) - Owner UID
+    //   - productId: string (required)
+    //   - productName: string (optional)
+    //   - price: number (optional)
+    //   - status: string (required) - ['pending', 'shipped', 'delivered']
+    //   - createdAt: timestamp (optional)
+    //
+    // Collection: trees
+    // Document ID: {treeId}
+    // Fields:
+    //   - uid: string (required) - Owner UID
+    //   - species: string (required)
+    //   - location: map (required) - {name, lat, lng}
+    //   - plantedDate: string (required)
+    //   - status: string (required) - ['growing', 'mature']
+    //   - photoUrl: string (optional)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.uid;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+         (request.auth.token.email == "indianpsyco2000@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'ecoPoints', 'role']) &&
+             data.uid == request.auth.uid &&
+             data.email is string &&
+             data.ecoPoints is number &&
+             data.role in ['user', 'admin'] &&
+             data.email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidOrder(data) {
+      return data.keys().hasAll(['uid', 'productId', 'status']) &&
+             data.uid == request.auth.uid &&
+             data.productId is string &&
+             data.status in ['pending', 'shipped', 'delivered'];
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId) && isValidUser(request.resource.data) && (request.resource.data.role == 'user' || isAdmin());
+      allow update: if isOwner(userId) && isValidUser(request.resource.data) && (request.resource.data.role == resource.data.role || isAdmin());
+    }
+
+    match /orders/{orderId} {
+      allow read: if isDocOwner() || isAdmin();
+      allow create: if isAuthenticated() && isValidOrder(request.resource.data);
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /trees/{treeId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+  }
+}
