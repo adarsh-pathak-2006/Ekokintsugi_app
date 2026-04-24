@@ -13,6 +13,22 @@ export type CheckoutPayload = {
   notes: string;
 };
 
+type CheckoutResponse = {
+  success: boolean;
+  checkoutReference: string;
+  orderIds: string[];
+  summary?: {
+    totalAmount: number;
+    totalCo2Saved: number;
+    totalWasteDiverted: number;
+    totalCreditsEarned: number;
+  };
+  email?: {
+    delivered: boolean;
+    reason?: string;
+  };
+};
+
 export async function submitCheckout(session: Session | null, items: CartLine[], customer: CheckoutPayload) {
   if (!session?.access_token) {
     throw new Error("Please sign in before checking out.");
@@ -43,5 +59,14 @@ export async function submitCheckout(session: Session | null, items: CartLine[],
     throw new Error(payload?.error || "Checkout failed.");
   }
 
-  return payload;
+  if (
+    !payload ||
+    typeof payload !== "object" ||
+    typeof payload.checkoutReference !== "string" ||
+    !Array.isArray(payload.orderIds)
+  ) {
+    throw new Error("Checkout completed with an invalid server response. Please refresh the app and verify the order in your Orders screen.");
+  }
+
+  return payload as CheckoutResponse;
 }

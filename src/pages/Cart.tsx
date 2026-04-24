@@ -57,7 +57,8 @@ export default function CartPage() {
     try {
       const result = await submitCheckout(session, items, form);
       clearCart();
-      setMessage(`Checkout ${result.checkoutReference} completed. Order email sent${result.email?.delivered ? "." : ` failed: ${result.email?.reason || "unknown reason"}`}`);
+      const checkoutReference = typeof result.checkoutReference === "string" ? result.checkoutReference : "created";
+      setMessage(`Checkout ${checkoutReference} completed. Order email sent${result.email?.delivered ? "." : ` failed: ${result.email?.reason || "unknown reason"}`}`);
       navigate("/orders");
     } catch (error: any) {
       setMessage(error?.message || "Unable to complete checkout.");
