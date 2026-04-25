@@ -34,7 +34,7 @@ function Header() {
   const { itemCount } = useCart();
 
   return (
-    <header className="sticky top-0 z-40 px-4 pt-4">
+    <header className="fixed left-0 right-0 top-0 z-40 px-4 pt-4">
       <motion.div
         initial={{ opacity: 0, y: -14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -200,7 +200,7 @@ function MemberShell() {
   const location = useLocation();
 
   return (
-    <div className="app-shell min-h-screen pb-28 text-ink">
+    <div className="app-shell min-h-screen pb-28 pt-24 text-ink">
       <Header />
       <main className="mx-auto max-w-md">
         <AnimatePresence mode="wait">

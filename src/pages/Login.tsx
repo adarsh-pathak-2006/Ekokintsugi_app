@@ -33,8 +33,12 @@ export default function Login() {
   }
 
   return (
-    <div className="app-page min-h-screen justify-center py-6">
-      <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="page-hero overflow-hidden p-6">
+    <div className="flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-4 py-6">
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="page-hero w-full max-w-md overflow-hidden p-6"
+      >
         <div className="absolute inset-0">
           <div className="absolute -left-8 top-10 h-32 w-32 rounded-full bg-gold/20 blur-3xl" />
           <div className="absolute -right-10 bottom-20 h-40 w-40 rounded-full bg-olive/18 blur-3xl" />
@@ -149,7 +153,7 @@ export default function Login() {
         </div>
       </motion.div>
 
-      <p className="text-center text-[10px] font-mono uppercase tracking-[0.3em] text-olive/35">
+      <p className="mt-5 text-center text-[10px] font-mono uppercase tracking-[0.3em] text-olive/35">
         Crafted for circular commerce, visible impact, and richer member journeys
       </p>
     </div>

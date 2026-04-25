@@ -129,15 +129,15 @@ export default function CartPage() {
 
       <GlassCard className="editorial-grid p-5">
         <div className="relative z-10 grid grid-cols-3 gap-3">
-          <div className="rounded-[1.3rem] border border-white/50 bg-white/55 p-4">
+          <div className="rounded-[1.3rem] border border-white/75 bg-white/82 shadow-[0_16px_30px_-24px_rgba(21,34,29,0.35)] p-4">
             <p className="mini-label">Subtotal</p>
             <p className="mt-2 font-serif text-[1.4rem] text-olive">{formatInr(subtotal)}</p>
           </div>
-          <div className="rounded-[1.3rem] border border-white/50 bg-white/55 p-4">
+          <div className="rounded-[1.3rem] border border-white/75 bg-white/82 shadow-[0_16px_30px_-24px_rgba(21,34,29,0.35)] p-4">
             <p className="mini-label">CO2 Saved</p>
             <p className="mt-2 font-serif text-[1.4rem] text-olive">{totals.co2.toFixed(2)} kg</p>
           </div>
-          <div className="rounded-[1.3rem] border border-white/50 bg-white/55 p-4">
+          <div className="rounded-[1.3rem] border border-white/75 bg-white/82 shadow-[0_16px_30px_-24px_rgba(21,34,29,0.35)] p-4">
             <p className="mini-label">Waste Diverted</p>
             <p className="mt-2 font-serif text-[1.4rem] text-olive">{totals.waste.toFixed(2)} kg</p>
           </div>
@@ -149,44 +149,44 @@ export default function CartPage() {
           <div className="grid grid-cols-2 gap-4">
             <label className="block">
               <span className="mini-label mb-2 block">Full name</span>
-              <input value={form.fullName} onChange={(event) => setForm((current) => ({ ...current, fullName: event.target.value }))} className="w-full rounded-2xl border border-white/50 bg-white/55 px-4 py-4 text-sm text-ink outline-none" required />
+              <input value={form.fullName} onChange={(event) => setForm((current) => ({ ...current, fullName: event.target.value }))} className="w-full rounded-2xl border border-[#dfe6df] bg-white px-4 py-4 text-sm text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_10px_24px_-22px_rgba(17,31,26,0.55)] outline-none transition focus:border-gold/55 focus:ring-2 focus:ring-gold/15" required />
             </label>
             <label className="block">
               <span className="mini-label mb-2 block">Email</span>
-              <input type="email" value={form.email} onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))} className="w-full rounded-2xl border border-white/50 bg-white/55 px-4 py-4 text-sm text-ink outline-none" required />
+              <input type="email" value={form.email} onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))} className="w-full rounded-2xl border border-[#dfe6df] bg-white px-4 py-4 text-sm text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_10px_24px_-22px_rgba(17,31,26,0.55)] outline-none transition focus:border-gold/55 focus:ring-2 focus:ring-gold/15" required />
             </label>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <label className="block">
               <span className="mini-label mb-2 block">Phone</span>
-              <input value={form.phone} onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))} className="w-full rounded-2xl border border-white/50 bg-white/55 px-4 py-4 text-sm text-ink outline-none" />
+              <input value={form.phone} onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))} className="w-full rounded-2xl border border-[#dfe6df] bg-white px-4 py-4 text-sm text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_10px_24px_-22px_rgba(17,31,26,0.55)] outline-none transition focus:border-gold/55 focus:ring-2 focus:ring-gold/15" />
             </label>
             <label className="block">
               <span className="mini-label mb-2 block">Postal code</span>
-              <input value={form.postalCode} onChange={(event) => setForm((current) => ({ ...current, postalCode: event.target.value }))} className="w-full rounded-2xl border border-white/50 bg-white/55 px-4 py-4 text-sm text-ink outline-none" />
+              <input value={form.postalCode} onChange={(event) => setForm((current) => ({ ...current, postalCode: event.target.value }))} className="w-full rounded-2xl border border-[#dfe6df] bg-white px-4 py-4 text-sm text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_10px_24px_-22px_rgba(17,31,26,0.55)] outline-none transition focus:border-gold/55 focus:ring-2 focus:ring-gold/15" />
             </label>
           </div>
           <label className="block">
             <span className="mini-label mb-2 block">Shipping address</span>
-            <textarea value={form.shippingAddress} onChange={(event) => setForm((current) => ({ ...current, shippingAddress: event.target.value }))} className="w-full rounded-2xl border border-white/50 bg-white/55 px-4 py-4 text-sm text-ink outline-none min-h-28" required />
+            <textarea value={form.shippingAddress} onChange={(event) => setForm((current) => ({ ...current, shippingAddress: event.target.value }))} className="min-h-28 w-full rounded-2xl border border-[#dfe6df] bg-white px-4 py-4 text-sm text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_10px_24px_-22px_rgba(17,31,26,0.55)] outline-none transition focus:border-gold/55 focus:ring-2 focus:ring-gold/15" required />
           </label>
           <div className="grid grid-cols-3 gap-4">
             <label className="block">
               <span className="mini-label mb-2 block">City</span>
-              <input value={form.city} onChange={(event) => setForm((current) => ({ ...current, city: event.target.value }))} className="w-full rounded-2xl border border-white/50 bg-white/55 px-4 py-4 text-sm text-ink outline-none" />
+              <input value={form.city} onChange={(event) => setForm((current) => ({ ...current, city: event.target.value }))} className="w-full rounded-2xl border border-[#dfe6df] bg-white px-4 py-4 text-sm text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_10px_24px_-22px_rgba(17,31,26,0.55)] outline-none transition focus:border-gold/55 focus:ring-2 focus:ring-gold/15" />
             </label>
             <label className="block">
               <span className="mini-label mb-2 block">State</span>
-              <input value={form.state} onChange={(event) => setForm((current) => ({ ...current, state: event.target.value }))} className="w-full rounded-2xl border border-white/50 bg-white/55 px-4 py-4 text-sm text-ink outline-none" />
+              <input value={form.state} onChange={(event) => setForm((current) => ({ ...current, state: event.target.value }))} className="w-full rounded-2xl border border-[#dfe6df] bg-white px-4 py-4 text-sm text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_10px_24px_-22px_rgba(17,31,26,0.55)] outline-none transition focus:border-gold/55 focus:ring-2 focus:ring-gold/15" />
             </label>
             <label className="block">
               <span className="mini-label mb-2 block">Country</span>
-              <input value={form.country} onChange={(event) => setForm((current) => ({ ...current, country: event.target.value }))} className="w-full rounded-2xl border border-white/50 bg-white/55 px-4 py-4 text-sm text-ink outline-none" />
+              <input value={form.country} onChange={(event) => setForm((current) => ({ ...current, country: event.target.value }))} className="w-full rounded-2xl border border-[#dfe6df] bg-white px-4 py-4 text-sm text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_10px_24px_-22px_rgba(17,31,26,0.55)] outline-none transition focus:border-gold/55 focus:ring-2 focus:ring-gold/15" />
             </label>
           </div>
           <label className="block">
             <span className="mini-label mb-2 block">Order notes</span>
-            <textarea value={form.notes} onChange={(event) => setForm((current) => ({ ...current, notes: event.target.value }))} className="w-full rounded-2xl border border-white/50 bg-white/55 px-4 py-4 text-sm text-ink outline-none min-h-24" />
+            <textarea value={form.notes} onChange={(event) => setForm((current) => ({ ...current, notes: event.target.value }))} className="min-h-24 w-full rounded-2xl border border-[#dfe6df] bg-white px-4 py-4 text-sm text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_10px_24px_-22px_rgba(17,31,26,0.55)] outline-none transition focus:border-gold/55 focus:ring-2 focus:ring-gold/15" />
           </label>
 
           {message ? (

@@ -171,7 +171,8 @@
   }
 
   .support-text {
-    @apply text-sm leading-relaxed text-olive/68;
+    @apply text-sm leading-relaxed text-olive/68 break-words;
+    overflow-wrap: anywhere;
   }
 
   .primary-button {

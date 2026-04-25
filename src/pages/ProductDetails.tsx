@@ -97,7 +97,7 @@ export default function ProductDetails() {
 
       <GlassCard className="overflow-hidden">
         <div className="ambient-ring -right-14 -top-14 h-40 w-40 opacity-35" />
-        <div className="relative h-80">
+        <div className="relative min-h-[28rem]">
           <div className="absolute inset-4 image-shell">
             <img
               src={product.image}
@@ -110,30 +110,67 @@ export default function ProductDetails() {
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-pine via-pine/40 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-5 text-cream">
-            <Pill className="kinetic-pill border-white/10 bg-white/10 text-cream">{product.category}</Pill>
-            <h1 className="mt-4 font-serif text-[2.2rem] leading-none">{product.name}</h1>
-            <p className="mt-3 max-w-sm text-sm text-cream/76">{product.description}</p>
+          <div className="absolute inset-x-0 bottom-0 p-4 text-cream sm:p-5">
+            <div className="max-w-full rounded-[1.8rem] border border-white/12 bg-pine/62 p-4 backdrop-blur-md sm:max-w-[85%]">
+              <Pill className="kinetic-pill border-white/10 bg-white/10 text-cream">{product.category}</Pill>
+              <h1 className="mt-4 max-w-full break-words font-serif text-[2rem] leading-[0.95] [overflow-wrap:anywhere] sm:text-[2.2rem]">
+                {product.name}
+              </h1>
+              <p className="mt-3 max-w-full text-sm leading-relaxed text-cream/76 [overflow-wrap:anywhere]">
+                {product.description}
+              </p>
+            </div>
           </div>
         </div>
       </GlassCard>
 
       <DarkCard className="p-5">
-        <div className="relative z-10 grid grid-cols-3 gap-3">
-          <div className="rounded-[1.4rem] border border-white/10 bg-white/10 p-4">
+        <div className="relative z-10 grid grid-cols-3 gap-2 sm:gap-3">
+          <div className="min-w-0 rounded-[1.4rem] border border-white/10 bg-white/10 p-3 sm:p-4">
             <p className="mini-label text-cream/55">Price</p>
-            <p className="mt-3 font-serif text-[1.65rem] text-gold">{formatInr(product.price)}</p>
+            <p className="mt-3 font-serif leading-none tracking-tight text-gold text-[clamp(1rem,3.9vw,1.45rem)]">
+              {formatInr(product.price)}
+            </p>
           </div>
-          <div className="rounded-[1.4rem] border border-white/10 bg-white/10 p-4">
+          <div className="min-w-0 rounded-[1.4rem] border border-white/10 bg-white/10 p-3 sm:p-4">
             <p className="mini-label text-cream/55">CO2</p>
-            <p className="mt-3 font-serif text-[1.65rem] text-gold">{product.co2Saved}kg</p>
+            <p className="mt-3 font-serif leading-none tracking-tight text-gold text-[clamp(1rem,3.9vw,1.45rem)]">
+              {product.co2Saved}kg
+            </p>
           </div>
-          <div className="rounded-[1.4rem] border border-white/10 bg-white/10 p-4">
+          <div className="min-w-0 rounded-[1.4rem] border border-white/10 bg-white/10 p-3 sm:p-4">
             <p className="mini-label text-cream/55">Waste</p>
-            <p className="mt-3 font-serif text-[1.65rem] text-gold">{product.wasteSavedKg}kg</p>
+            <p className="mt-3 font-serif leading-none tracking-tight text-gold text-[clamp(1rem,3.9vw,1.45rem)]">
+              {product.wasteSavedKg}kg
+            </p>
           </div>
         </div>
       </DarkCard>
+
+      <GlassCard className="p-5">
+        <div className="relative z-10 grid gap-4 sm:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+          <div className="min-w-0">
+            <SectionTitle
+              title="Craft story"
+              description="A cleaner reading surface for the full product narrative, material intent, and impact context."
+            />
+            <p className="mt-5 rounded-[1.5rem] border border-white/55 bg-white/55 px-4 py-4 text-[15px] leading-7 text-olive/82 [overflow-wrap:anywhere]">
+              {product.description}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-1">
+            <div className="rounded-[1.4rem] border border-white/55 bg-white/55 p-4">
+              <p className="mini-label">Category</p>
+              <p className="mt-2 break-words font-semibold text-olive [overflow-wrap:anywhere]">{product.category}</p>
+            </div>
+            <div className="rounded-[1.4rem] border border-white/55 bg-white/55 p-4">
+              <p className="mini-label">Impact profile</p>
+              <p className="mt-2 text-sm font-medium text-olive">{product.co2Saved} kg CO2 and {product.wasteSavedKg} kg waste saved</p>
+            </div>
+          </div>
+        </div>
+      </GlassCard>
 
       <GlassCard className="p-5">
         <SectionTitle title="Material composition" description="Premium tactility, reclaimed inputs, and lifecycle-ready construction." />
@@ -141,7 +178,7 @@ export default function ProductDetails() {
           {product.materials.map((material) => (
             <div key={material} className="flex items-center gap-3 rounded-[1.2rem] border border-white/55 bg-white/55 px-4 py-4">
               <Leaf className="h-4 w-4 text-gold" />
-              <span className="text-sm text-olive">{material}</span>
+              <span className="min-w-0 text-sm text-olive [overflow-wrap:anywhere]">{material}</span>
             </div>
           ))}
         </div>
@@ -158,8 +195,8 @@ export default function ProductDetails() {
                 <div className="mt-0.5 rounded-2xl bg-olive/8 p-2 text-gold">
                   <Icon className="h-4 w-4" />
                 </div>
-                <div>
-                  <p className="font-medium text-olive">{highlight}</p>
+                <div className="min-w-0">
+                  <p className="break-words font-medium text-olive [overflow-wrap:anywhere]">{highlight}</p>
                   <p className="support-text mt-1">Designed to make the app feel more editorial and trustworthy, not template-driven.</p>
                 </div>
               </div>
