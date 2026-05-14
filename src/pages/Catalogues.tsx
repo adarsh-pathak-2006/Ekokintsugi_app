@@ -1,23 +1,26 @@
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { ProductCatalogCard } from "../components/catalog-ui";
+import { CategoryCatalogCard } from "../components/catalog-ui";
 import { GlassCard, PageHeader, PageTransition, Pill, SectionTitle } from "../components/app-ui";
-import { cn } from "../lib/utils";
+import { getCataloguableProductTypes, getProductsForType } from "../lib/catalog";
 import { fetchCatalog } from "../lib/data";
+import { cn } from "../lib/utils";
 import type { Product } from "../types";
 
 type Filter = "All" | string;
 
-export default function Shop() {
+export default function Catalogues() {
   const [query, setQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const filters: Filter[] = ["All", ...Array.from(new Set(products.map((product) => product.category).filter(Boolean))) as string[]];
+  const catalogues = useMemo(() => getCataloguableProductTypes(products), [products]);
 
   useEffect(() => {
     let mounted = true;
+
     async function loadCatalog() {
       try {
         const catalog = await fetchCatalog();
@@ -44,22 +47,32 @@ export default function Shop() {
     };
   }, []);
 
-  const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
-      const categoryMatch = activeFilter === "All" || product.category === activeFilter;
+  const filteredCatalogues = useMemo(() => {
+    return catalogues.filter((catalogue) => {
+      const productsInCatalogue = getProductsForType(products, catalogue.label);
+      if (productsInCatalogue.length === 0) return false;
+
+      const categoryMatch =
+        activeFilter === "All" || productsInCatalogue.some((product) => product.category === activeFilter);
       const queryMatch =
-        product.name.toLowerCase().includes(query.toLowerCase()) ||
-        product.description.toLowerCase().includes(query.toLowerCase());
+        query.trim().length === 0 ||
+        catalogue.label.toLowerCase().includes(query.toLowerCase()) ||
+        catalogue.title.toLowerCase().includes(query.toLowerCase()) ||
+        catalogue.description.toLowerCase().includes(query.toLowerCase()) ||
+        productsInCatalogue.some((product) =>
+          [product.name, product.description, product.category].join(" ").toLowerCase().includes(query.toLowerCase())
+        );
+
       return categoryMatch && queryMatch;
     });
-  }, [activeFilter, products, query]);
+  }, [activeFilter, catalogues, products, query]);
 
   return (
     <PageTransition>
       <PageHeader
-        subtitle="Collection Studio"
-        title="Shop the circular collection."
-        detail="The catalog now feels more like the website: richer imagery, clearer product storytelling, and faster browsing."
+        subtitle="Catalogue Index"
+        title="Browse by catalogue."
+        detail="Explore the collection by product family first, then step into each catalogue for a cleaner discovery flow."
       />
 
       <GlassCard className="editorial-grid p-4">
@@ -68,7 +81,7 @@ export default function Shop() {
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search footwear, bags, wallets..."
+            placeholder="Search wallets, bags, shoes..."
             className="w-full bg-transparent text-sm text-ink outline-none placeholder:text-olive/35"
           />
           <SlidersHorizontal className="h-4 w-4 text-olive/45" />
@@ -95,37 +108,43 @@ export default function Shop() {
         <div className="relative h-52">
           <img
             src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=1200&q=80"
-            alt="Collection hero"
+            alt="Catalogue hero"
             className="h-full w-full object-cover"
             referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-pine via-pine/45 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-5 text-cream">
-            <Pill className="kinetic-pill border-white/10 bg-white/10 text-cream">Capsule Drop 04</Pill>
-            <h2 className="mt-4 font-serif text-[1.85rem] leading-none">Designed like a luxury edit, not a product list.</h2>
-            <p className="mt-3 max-w-xs text-sm text-cream/72">New motion, better hierarchy, and richer impact cues across every card.</p>
+            <Pill className="kinetic-pill border-white/10 bg-white/10 text-cream">Catalogue Studio</Pill>
+            <h2 className="mt-4 font-serif text-[1.85rem] leading-none">Choose a family, then explore its catalogue.</h2>
+            <p className="mt-3 max-w-xs text-sm text-cream/72">A separate browsing layer built for catalogue-first discovery without changing the main shop flow.</p>
           </div>
         </div>
       </GlassCard>
 
-      <SectionTitle title="Current collection pulse" description="A more editorial storefront inspired by the website collection language." />
-
+      <SectionTitle
+        title="All catalogues"
+        description="Each card opens a dedicated catalogue page for that product family."
+      />
       <div className="space-y-4">
         {isLoading ? (
           <GlassCard className="p-6">
-            <p className="relative z-10 text-sm text-olive">Loading live catalog from Supabase...</p>
+            <p className="relative z-10 text-sm text-olive">Preparing category catalogues...</p>
           </GlassCard>
         ) : loadError ? (
           <GlassCard className="p-6">
             <p className="relative z-10 text-sm text-olive">{loadError}</p>
           </GlassCard>
-        ) : filteredProducts.length === 0 ? (
+        ) : filteredCatalogues.length === 0 ? (
           <GlassCard className="p-6">
-            <p className="relative z-10 text-sm text-olive">No products are available in the shared catalog yet.</p>
+            <p className="relative z-10 text-sm text-olive">No catalogues matched your search right now.</p>
           </GlassCard>
         ) : (
-          filteredProducts.map((product, index) => (
-            <ProductCatalogCard key={product.id} product={product} index={index} />
+          filteredCatalogues.map((catalogue) => (
+            <CategoryCatalogCard
+              key={catalogue.slug}
+              meta={catalogue}
+              productCount={getProductsForType(products, catalogue.label).length}
+            />
           ))
         )}
       </div>

@@ -1,5 +1,6 @@
 import type { User } from "@supabase/supabase-js";
 import { USER_DATA } from "../constants";
+import { deriveProductType } from "./catalog";
 import type { ImpactRecord, ImpactStats, OrderSummary, Product, ProfileData, Tree } from "../types";
 import { isSupabaseConfigured, supabase } from "./supabase";
 import { normalizeRetailPrice } from "./utils";
@@ -32,6 +33,13 @@ function normalizeProduct(row: any): Product {
     wasteSavedKg: Number(row?.waste_factor ?? 0),
     image: normalizeImageUrl(row),
     category: String(row?.category ?? "Collection"),
+    productType: deriveProductType({
+      id: String(row?.id ?? ""),
+      name,
+      category: String(row?.category ?? "Collection"),
+      description: String(row?.description ?? ""),
+      image: normalizeImageUrl(row),
+    }),
     materials: ["Reclaimed leather", "Circular construction", "Low-impact finishing"],
     highlights: ["Synced with shared catalog", "Impact-aware purchase flow", "Ready for repairs and returns"],
   };
@@ -173,7 +181,7 @@ export async function fetchOrders(userId: string): Promise<OrderSummary[]> {
   }
 
   return data.map((row: any) => {
-    const product = row.products
+    const product: Product = row.products
       ? normalizeProduct(row.products)
       : {
           id: String(row.product_id),
@@ -185,6 +193,7 @@ export async function fetchOrders(userId: string): Promise<OrderSummary[]> {
           wasteSavedKg: 0,
           image: "/images/products/signature-sneaker.jpg",
           category: "Collection",
+          productType: "Other",
           materials: ["Circular construction"],
           highlights: ["Shared with website"],
         };

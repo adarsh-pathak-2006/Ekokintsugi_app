@@ -1,3 +1,5 @@
+export type ProductType = "Wallets" | "Bags" | "Shoes" | "Accessories" | "Other";
+
 export interface Product {
   id: string;
   name: string;
@@ -8,6 +10,7 @@ export interface Product {
   wasteSavedKg: number;
   image: string;
   category: string;
+  productType: ProductType;
   materials: string[];
   highlights: string[];
 }

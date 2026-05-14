@@ -2,6 +2,7 @@ import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 import {
   Bell,
+  BookOpen,
   LayoutGrid,
   Leaf,
   Menu,
@@ -17,6 +18,8 @@ import Impact from "./pages/Impact";
 import Profile from "./pages/Profile";
 import WalletPage from "./pages/Wallet";
 import ProductDetails from "./pages/ProductDetails";
+import CategoryCatalog from "./pages/CategoryCatalog";
+import Catalogues from "./pages/Catalogues";
 import Forest from "./pages/Forest";
 import Orders from "./pages/Orders";
 import Settings from "./pages/Settings";
@@ -84,6 +87,7 @@ function BottomNav() {
   const navItems = [
     { path: "/", icon: LayoutGrid, label: "Home" },
     { path: "/shop", icon: ShoppingBag, label: "Shop" },
+    { path: "/catalogues", icon: BookOpen, label: "Catalogues" },
     { path: "/impact", icon: Leaf, label: "Impact" },
     { path: "/wallet", icon: Wallet, label: "Wallet" },
     { path: "/profile", icon: User, label: "Profile" },
@@ -208,6 +212,8 @@ function MemberShell() {
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/shop/:id" element={<ProductDetails />} />
+            <Route path="/catalogues" element={<Catalogues />} />
+            <Route path="/catalogues/:catalogueSlug" element={<CategoryCatalog />} />
             <Route path="/impact" element={<Impact />} />
             <Route path="/forest" element={<Forest />} />
             <Route path="/wallet" element={<WalletPage />} />

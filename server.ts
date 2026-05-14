@@ -9,6 +9,8 @@ dotenv.config({ path: [".env.local", ".env"] });
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3002;
+const isDevCommand = process.env.npm_lifecycle_event === "dev";
+const isProduction = process.env.NODE_ENV === "production" && !isDevCommand;
 const supabaseUrl = process.env.VITE_SUPABASE_URL || "";
 const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || "";
 const notificationEmail = process.env.ORDER_NOTIFICATION_EMAIL || "";
@@ -316,7 +318,7 @@ app.post("/api/orders/checkout", async (req, res) => {
 });
 
 async function startServer() {
-  if (process.env.NODE_ENV !== "production") {
+  if (!isProduction) {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
